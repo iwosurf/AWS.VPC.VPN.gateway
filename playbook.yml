@@ -19,13 +19,9 @@
        unarchive: src=source/strongswan-5.6.2.tar.bz2 dest=/openvpn owner=root group=root mode=0644
 
      - name: Install aptitude
-       become: yes
-       become_method: sudo
        apt: pkg=aptitude state=installed update_cache=true
 
      - name: install strongswan
-       become: yes
-       become_method: sudo
        command: aptitude install strongswan -y
 
      - name: strongswan config ipsec.sh
