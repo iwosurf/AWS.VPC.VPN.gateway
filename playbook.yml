@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: true
+  tasks:
+     - name: create file
+       file:
+           path: /openvpn
+           state: directory
+           mode: 0644
+
+     - name: copy OpenVpn Access Server
+       copy: src=source/openvpn-as-2.5-Ubuntu16.i386.deb dest=/openvpn owner=root group=root mode=0644
+
+     - name: install OpenVpn Access server
+       apt:
+         deb: /openvpn/openvpn-as-2.5-Ubuntu16.i386.deb
+
+     - name: copy Strongswan Packet
+       copy: src=source/strongswan-5.6.2.tar.bz2 dest=/openvpn owner=root group=root mode=0644
+
+     - name: extract strongswan-5.6.2.tar.bz2
+       unarchive:
+         src: openvpn/strongswan-5.6.2.tar.bz2
+         dest: /openvpn
+
+     - name: Install aptitude
+       become: yes
+       become_method: sudo
+       apt: pkg=aptitude state=installed update_cache=true
+
+     - name: install strongswan
+       become: yes
+       become_method: sudo
+       command: aptitude install strongswan -y
+
+     - name: strongswan config ipsec.sh
+       copy: src=source/strongswan_config/ipsec.sh dest=/sbin owner=root group=root mode=0644
+
+     - name: strongswan config ipsec.secrets
+       copy: src=source/strongswan_config/ipsec.secrets dest=/etc owner=root group=root mode=0644
+
+     - name: strongswan config ipsec.conf
+       copy: src=source/strongswan_config/ipsec.conf dest=/etc owner=root group=root mode=0644
