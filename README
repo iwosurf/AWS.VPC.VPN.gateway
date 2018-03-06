@@ -1,3 +1,7 @@
 Manual VPN Connectivity AWS <==> local Server
 
 https://docs.openvpn.net/configuration/extending-vpn-connectivity-to-amazon-aws-vpc-using-aws-vpc-vpn-gateway-service/
+
+Local Router configuration
+
+Port Forwarding [UDP/1194~1194] > local IP
